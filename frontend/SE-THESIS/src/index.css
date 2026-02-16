@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -30,30 +31,12 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: "Montserrat", sans-serif;
 }
 
 h1 {
   font-size: 3.2em;
   line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 @media (prefers-color-scheme: light) {
@@ -66,5 +49,80 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.shadow-inner-neumorphic {
+  box-shadow:
+    inset 2.5px 2.5px 8px rgba(0, 0, 0, 0.45),
+    inset -1px -1px 3px rgba(30, 30, 30, 0.2);
+}
+
+.shadow-outside-dropshadow {
+  box-shadow:
+    -8px -8px 8px rgba(238, 240, 242, 0.5),
+    8px 8px 8px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-inside-dropshadow {
+  box-shadow:
+   inset 8px 8px 8px rgba(238, 240, 242, 0.5),
+   inset -8px -8px 8px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-inside-dropshadow-small {
+  box-shadow:
+   inset -4px -4px 4px rgba(238, 240, 242, 0.8),
+   inset 4px 4px 4px rgba(0, 0, 0, 0.4);
+}
+
+.shadow-dropshadow {
+  box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.5);
+}
+
+.font-montserrat {
+  font-family: "Montserrat", sans-serif;
+}
+
+.text-header {
+  font-size: clamp(1.25rem, 3.75vw, 5rem);
+}
+
+.text-subheader {
+  font-size: clamp(0.75rem, 1.5vw, 1.8rem);
+}
+
+.text-subtitle {
+  font-size: clamp(0.75rem, 1.1vw, 1.5rem);
+}
+
+.loader {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  background: linear-gradient(0deg, rgba(92, 92, 92, 0.2) 33%, #505153 100%);
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite;
+}
+.loader::after {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #e4e3e1;
+}
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
