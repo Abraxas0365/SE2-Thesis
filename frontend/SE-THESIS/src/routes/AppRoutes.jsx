@@ -18,8 +18,7 @@ export default function AppRoutes() {
   const location = useLocation();
 
   const hasChecked = useRef(false);
-  const SERVER_HEALTH = import.meta.env.VITE_SERVER_HEALTH;
-  const BACKEND_HEALTH = import.meta.env.VITE_BACKEND_HEALTH;
+  const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
   useEffect(() => {
     let interval;
@@ -27,8 +26,8 @@ export default function AppRoutes() {
     const checkServerStatus = async () => {
       try {
         const [serverRes, backendRes] = await Promise.all([
-          fetch(SERVER_HEALTH),
-          fetch(BACKEND_HEALTH),
+          fetch(SERVER_URL + "/health"),
+          fetch(SERVER_URL + "/Thesis/home/health"),
         ]);
 
         console.log("Server Health Response:", serverRes.ok);

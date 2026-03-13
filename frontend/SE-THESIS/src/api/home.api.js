@@ -1,10 +1,9 @@
 import axios from "axios";
 
-const BASE_URL = "http://localhost:4000/Thesis/home";
-const DET_URL = "http://localhost:4000/Thesis/home/people-count";
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 export const getHomeMessage = async () => {
-  const res = await axios.get(BASE_URL);
+  const res = await axios.get(SERVER_URL + "/home");
   return res.data.message;
 };
 
