@@ -3,6 +3,11 @@ import Logo from "@/assets/icons/logo.png";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/authService";
 import { useForm } from "react-hook-form";
+import { useServerStatus } from "../context/serverStatusContext.jsx";
+import { handleServerDown } from "../utils/serverDownHandler.js";
+import { Toaster } from "../components/ui/sonner.js";
+import { toast } from "sonner";
+import { CircleAlert } from "lucide-react";
 
 import SlideUp from "../components/animations/slideUp";
 
@@ -14,7 +19,10 @@ import SlideUp from "../components/animations/slideUp";
 //TODO: Proper page routing
 
 export default function SignUpPage() {
-  //* These are the function of react-hook-form
+  const { isServerUp, setIsServerUp } = useServerStatus();
+  const [registerError, setRegisterError] = useState("");
+
+  // ?These are the function of react-hook-form
   const {
     register,
     handleSubmit,
@@ -22,10 +30,27 @@ export default function SignUpPage() {
     formState: { errors, isSubmitting },
   } = useForm();
 
-  //* Watches the password form real-time for validatin
+  // ?Watches everything for validation
+  const username = watch("username");
+  const email = watch("email");
+  const password = watch("password");
   const passwordValue = watch("password", "");
 
-  //* Well, self explanatory. Sends the formdata to the auth service to express backend
+  const isDisabled = !username || !email || !password || !passwordValue;
+
+  const onError = (errors) => {
+    if (errors.email) {
+      toast.error(errors.email.message);
+    }
+    if (errors.password) {
+      toast.error(errors.password.message);
+    }
+    if (errors.confirmPassword) {
+      toast.error(errors.confirmPassword.message);
+    }
+  };
+
+  // ?Well, self explanatory. Sends the formdata to the auth service to express backend
   const onSubmit = async (data) => {
     try {
       const res = await registerUser({
@@ -35,13 +60,14 @@ export default function SignUpPage() {
         password: data.password,
       });
 
-      alert(res.message);
-      // navigate("/iris/login");
+      toast.success(res.message);
+      setRegisterError("");
+      navigate("/iris/login");
     } catch (error) {
-      alert(
-        error.response?.data?.message || error.message || "Registration failed",
-      );
-      console.error(error);
+      if (handleServerDown(error, setIsServerUp, navigate)) return;
+      const message = error.response?.data?.message || "Registration failed";
+      console.log(error.response?.data?.message)
+      setRegisterError(message);
     }
   };
 
@@ -49,27 +75,27 @@ export default function SignUpPage() {
   return (
     <div className="w-screen h-screen font-montserrat flex-col gap-9 bg-[#E4E3E1] p-10 flex items-center justify-center overflow-hidden">
       <SlideUp duration={0.7}>
-
         {/* SIGN UP SECTION */}
         <section className="mb-[5%] w-[40%] h-fit bg-[#DFDEDA] flex flex-col p-12 gap-9 items-center rounded-4xl shadow-outside-dropshadow">
           <h1 className="primary-text font-bold">Sign Up</h1>
+          {registerError && (
+            <div className="w-[90%] py-5 px-5 border border-[#A1A2A6] primary-text rounded-3xl flex flex-row items-center justify-center gap-2 mt-4">
+              <CircleAlert size={30} className="text-red-400" />
+              <p>{registerError}</p>
+            </div>
+          )}
           <form
-            //! Wraps submit to onSubmit function ng react-hook-form, then automatically runs all the validation rules
-            onSubmit={handleSubmit(onSubmit)}
+            // ?Wraps submit to onSubmit function ng react-hook-form, then automatically runs all the validation rules
+            onSubmit={handleSubmit(onSubmit, onError)}
             className=" w-full flex flex-col items-center gap-5"
           >
-            {/* //! Uses the register field ng react-hook-form. Then a parameter required is added with the error message */}
+            {/* // ?Uses the register field ng react-hook-form. Then a parameter required is added with the error message */}
             <input
               {...register("username", { required: "Username is required" })}
               className="w-[90%] bg-[#E4E3E1] primary-text rounded-3xl px-6 py-4 shadow-inside-dropshadow-small font-light text-subtitle"
               placeholder="Username"
             />
-            {/* //! Yung error field ng react-hook-form. So its basically see if there is error sa username field */}
-            {errors.username && (
-              <p className="text-red-500">{errors.username.message}</p>
-            )}
-
-            {/* //! Now all these input fields follow the same patter with some having extra parameters */}
+            {/* // ?Now all these input fields follow the same patter with some having extra parameters */}
 
             <input
               {...register("email", {
@@ -83,9 +109,6 @@ export default function SignUpPage() {
               type="email"
               placeholder="Email"
             />
-            {errors.email && (
-              <p className="text-red-500">{errors.email.message}</p>
-            )}
             <input
               {...register("password", {
                 required: "Password is required",
@@ -98,9 +121,6 @@ export default function SignUpPage() {
               type="password"
               placeholder="Password"
             />
-            {errors.password && (
-              <p className="text-red-500">{errors.password.message}</p>
-            )}
             <input
               {...register("confirmPassword", {
                 required: "Confirm your password",
@@ -111,14 +131,11 @@ export default function SignUpPage() {
               type="password"
               placeholder="Confirm Password"
             />
-            {errors.confirmPassword && (
-              <p className="text-red-500">{errors.confirmPassword.message}</p>
-            )}
-            {/* //! This uses the formState na isSubmitting then base on that state, updates the button itself */}
+            {/* // ?This uses the formState na isSubmitting then base on that state, updates the button itself */}
             <button
               type="submit"
-              disabled={isSubmitting}
-              className="w-[90%] bg-[#A1A2A6] text-subtitle text-[#E4E3E1] shadow-outside-dropshadow py-4 rounded-3xl cursor-pointer hover:bg-[#8A8B8E] transition-colors duration-300"
+              disabled={isDisabled || isSubmitting}
+              className={`w-[90%] bg-[#A1A2A6] text-subtitle text-[#E4E3E1] shadow-outside-dropshadow py-4 rounded-3xl ${isDisabled ? "opacity-70 transition-opacity duration-300 cursor-not-allowed" : "cursor-pointer hover:bg-[#8A8B8E] transition-all duration-300"}`}
             >
               {isSubmitting ? "Registering..." : "Sign Up"}
             </button>
@@ -131,8 +148,6 @@ export default function SignUpPage() {
             Already Have an Account?
           </button>
         </section>
-
-      
       </SlideUp>
 
       <SlideUp>
@@ -143,6 +158,7 @@ export default function SignUpPage() {
           </p>
         </section>
       </SlideUp>
+      <Toaster richColors position="bottom-right" />
     </div>
   );
 }

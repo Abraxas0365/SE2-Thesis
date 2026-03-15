@@ -1,8 +1,43 @@
 import React, { useState, useEffect } from "react";
+import { useServerStatus } from "../../context/serverStatusContext";
+import { checkServerHealth } from "../../services/healthService";
+import { useNavigate } from "react-router-dom";
+
 import Logo from "@/assets/images/slanted_logo.png";
 import Logo2 from "@/assets/images/slanted_logo2.png";
 
+// !Moved the check health function here
+// !Also heres where the wrapper status gets updated. So basically,
+// !when the server is down or not yet started, all pages will redirect
+// !here when they try to send a request to the backend. So when you enter
+// !here
+
+// !So right now server health is still kinda wonky.
+// TODO: Proper state update and page reloads when server went down
+// *DONE: Made a handler for this.
+
 export default function LoadingPage() {
+  const navigate = useNavigate();
+  const { setIsServerUp } = useServerStatus();
+
+  
+  useEffect(() => {
+    const checkServer = async () => {
+      setIsServerUp(false)
+      const healthy = await checkServerHealth();
+
+      if (healthy) {
+        setIsServerUp(true);
+        navigate("/iris/");
+      }
+    };
+
+    const interval = setInterval(checkServer, 3000);
+    checkServer();
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
     <div className="w-screen h-screen font-montserrat bg-[#E4E3E1] p-10 flex items-end justify-center overflow-hidden">
       <div className="absolute left-[7vw] bottom-[5vw] flex flex-row gap-4 items-center">

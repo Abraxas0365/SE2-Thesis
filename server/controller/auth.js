@@ -23,7 +23,7 @@ exports.registerUser = async (req, res) => {
         method: req.method,
         ip: req.ip,
       });
-      return res.status(400).json({ message: "Email already exist." });
+      return res.status(400).json({ message: "The user with this email already exist. Try logging in to your account." });
     }
     // Hashes the password
     const salt = await bcrypt.genSalt(10);

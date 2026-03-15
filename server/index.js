@@ -15,13 +15,14 @@ const authLimiter = rateLimit({
     // *When you reach the limit of 5 request consecutively, youll be 
     // *locked 15 minutes before being able to send another request
   windowMs: 15 * 60 * 1000,
-  max: 5,
+  max: 10,
   message: {
     status: 429,
     message: "Too many request, please try again after 15 minutes",
   },
   standardHeaders: true,
   legacyHeaders: false,
+  skipSuccessfulRequests: true,
 });
 
 connectDB().catch(console.dir);
@@ -33,10 +34,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-app.use("/Thesis/home", HomeRouter);
+app.use("/server/home", HomeRouter);
 
 //* We implement that authLimiter here
-app.use("auth/register", authLimiter);
+app.use("/auth/register", authLimiter);
 app.use("/auth/login", authLimiter);
 app.use("/auth", AuthRouter);
 
