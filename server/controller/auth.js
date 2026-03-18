@@ -120,3 +120,22 @@ exports.loginUser = async (req, res) => {
       });
   }
 };
+
+exports.isFirstTime = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.userID).select("first_name is_firsttime");
+    logger.info({
+      message: `AUTH FIRSTLOGIN -- ${user.first_name} checked: is_firsttime = ${user.is_firsttime}`,
+      method: req.method,
+      ip: req.ip,
+    });
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message:"It seems like there was a problem connecting to server" })
+    logger.error({
+      message: `AUTH FIRSTLOGIN -- ${error.message} with status code (500)`,
+      method: req.method,
+      ip: req.ip,
+    });
+  }
+}

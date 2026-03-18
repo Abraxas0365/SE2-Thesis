@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useServerStatus } from "../../context/serverStatusContext";
-import { checkServerHealth } from "../../services/healthService";
+import { checkServerHealth } from "../../shared/services/healthService";
 import { useNavigate } from "react-router-dom";
 
 import Logo from "@/assets/images/slanted_logo.png";

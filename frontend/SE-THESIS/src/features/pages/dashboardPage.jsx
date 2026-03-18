@@ -1,9 +1,23 @@
+// !Libraries
 import { useState, useEffect } from "react";
+// !Componenets
+import { checkFirstTime } from "../../shared/services/authService";
 
 export default function dashboard() {
   const [currentTime, setCurrentTime] = useState(new Date());
+  const [showGuide, setShowGuide] = useState(false);
 
   useEffect(() => {
+    const fetchFirstTime = async () => {
+      const user = await checkFirstTime();
+      if (user?.is_firsttime) {
+        setShowGuide(true);
+      }
+      console.log("USER STATUS:", user);
+    };
+
+    fetchFirstTime();
+
     const timer = setInterval(() => {
       setCurrentTime(new Date());
     }, 1000);
@@ -29,26 +43,26 @@ export default function dashboard() {
           </h2>
         </div>
 
-        <div className="relative w-full flex flex-row items-center justify-start gap-6 font-bold">
+        <div className="relative w-full h-[30vh] flex flex-row items-center justify-start gap-6 font-bold">
           <div className="flex flex-col items-start gap-4 primary-text">
             <h2 className="text-title">Occupied Rooms</h2>
-            <div className="w-[13vw] aspect-square rounded-2xl shadow-outside-dropshadow"></div>
+            <div className="w-[20vw] aspect-video rounded-2xl shadow-outside-dropshadow"></div>
           </div>
           <div className="flex flex-col items-start gap-4 primary-text">
             <h2 className="text-title">Vacant Rooms</h2>
-            <div className="w-[13vw] aspect-square rounded-2xl shadow-outside-dropshadow"></div>
+            <div className="w-[20vw] aspect-video rounded-2xl shadow-outside-dropshadow"></div>
           </div>
-          <div className="flex flex-col w-full items-start gap-4 primary-text">
+          <div className="flex flex-col w-full h-full items-start gap-4 primary-text">
             <h2 className="text-title">Activity History</h2>
-            <div className="w-full h-[13vw] rounded-2xl shadow-outside-dropshadow"></div>
+            <div className="w-full h-full rounded-2xl shadow-outside-dropshadow"></div>
           </div>
         </div>
 
         <div className="relative w-full h-full flex flex-col gap-4">
-            <h1 className="text-title primary-text font-bold">Classroom Status</h1>
-            <div className="w-full h-full rounded-2xl shadow-outside-dropshadow">
-
-            </div>
+          <h1 className="text-title primary-text font-bold">
+            Classroom Status
+          </h1>
+          <div className="w-full h-full rounded-2xl shadow-outside-dropshadow"></div>
         </div>
       </section>
     </div>

@@ -1,15 +1,17 @@
+// !Libraris
 import { useState } from "react";
-import Logo from "@/assets/icons/logo.png";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../services/authService";
 import { useForm } from "react-hook-form";
-import { useServerStatus } from "../context/serverStatusContext.jsx";
-import { handleServerDown } from "../utils/serverDownHandler.js";
-import { Toaster } from "../components/ui/sonner.js";
+// !Components Imports
+import { handleServerDown } from "../../shared/utils/serverDownHandler.js";
+import { registerUser } from "../../shared/services/authService";
+import { useServerStatus } from "../../context/serverStatusContext.jsx";
+import { Toaster } from "../../shared/components/ui/sonner.js";
+import SlideUp from "../../shared/components/animations/slideUp.jsx";
+// !Assets
+import Logo from "@/assets/icons/logo.png";
 import { toast } from "sonner";
 import { CircleAlert } from "lucide-react";
-
-import SlideUp from "../components/animations/slideUp";
 
 //*  Okay so huge update dito sa Signup page. I converted the validation form to react-hook-form. So all validations are done in that process
 //* instead of manually declaring function for each field. Also shortends the code by at least 30%.
@@ -66,7 +68,6 @@ export default function SignUpPage() {
     } catch (error) {
       if (handleServerDown(error, setIsServerUp, navigate)) return;
       const message = error.response?.data?.message || "Registration failed";
-      console.log(error.response?.data?.message)
       setRegisterError(message);
     }
   };

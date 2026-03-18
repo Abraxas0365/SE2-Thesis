@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App";
-import { Toaster } from "../src/components/ui/sonner";
+import App from "./apps/App";
+import { Toaster } from "./shared/components/ui/sonner";
 import { BrowserRouter } from "react-router-dom";
 import { ServerStatusProvider } from "./context/serverStatusContext";
 import "./index.css";

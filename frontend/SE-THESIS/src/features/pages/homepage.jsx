@@ -1,13 +1,16 @@
+// !Libraries
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+// !Components
+import { getHomeMessage, getPeopleCount } from "../../shared/api/home.api.js";
+import SlideRight from "../../shared/components/animations/slideRight.jsx";
+import SlideLeft from "../../shared/components/animations/slideLeft.jsx";
+// !Assets
+import backgroundImage from "@/assets/images/background.png";
+import GrayButton from "../../shared/components/ui/grayButton.jsx";
 import Logo from "@/assets/images/slanted_logo.png";
 import Logo2 from "@/assets/images/slanted_logo2.png";
-import { getHomeMessage, getPeopleCount } from "../api/home.api.js";
-import GrayButton from "../components/common/grayButton.jsx";
-import { useNavigate } from "react-router-dom";
-
-import SlideRight from "../components/animations/slideRight.jsx";
-import SlideLeft from "../components/animations/slideLeft.jsx";
-
+import Emb_Logo from "@/assets/images/embedded_logo.png";
 import Bulb from "@/assets/icons/bulb.png";
 import Target from "@/assets/icons/target.png";
 import Copy from "@/assets/icons/copy.png";
@@ -26,7 +29,10 @@ export default function HomePage() {
   };
 
   return (
-    <div className="w-screen h-screen font-montserrat bg-[#E4E3E1] p-10 flex items-end justify-center overflow-hidden relative">
+    <div
+      className="w-screen h-screen font-montserrat bg-[#E4E3E1] bg-cover bg-center p-10 flex items-end justify-center overflow-hidden relative "
+      // style={{ backgroundImage: `url(${backgroundImage})` }}
+    >
       <SlideRight>
         <section className="absolute w-[30%] h-fit flex flex-row gap-6 top-[2vw] left-[3vw]">
           <div className="flex flex-col gap-6 secondary-text">

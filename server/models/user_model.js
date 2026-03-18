@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ""
   },
+  is_firsttime: {
+    type: Boolean,
+    default: true
+  },
   time_created: {
     type: Date,
     default: Date.now,

@@ -1,17 +1,18 @@
 import { useState, useEffect, useRef } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import LoadingPage from "../components/pages/loadingPage";
-import HomePage from "../pages/homepage";
-import SignUpPage from "../auth/signUpPage";
-import LoginPage from "../auth/loginPage";
-import DashboardPage from "../pages/dashboardPage";
-import ActivityPage from "../pages/activityPage";
-import AnalyticsPage from "../pages/analyticsPage";
-import NotificationPage from "../pages/notificationPage";
-import Layout from "../components/layouts/layout";
-import DevelopmentPage from "../components/pages/developmentPage";
+import LoadingPage from "../features/pages/loadingPage";
+import HomePage from "../features/pages/homepage";
+import ClassroomPage from "../features/pages/classroomPage"
+import SignUpPage from "../features/auth/signUpPage";
+import LoginPage from "../features/auth/loginPage";
+import DashboardPage from "../features/pages/dashboardPage";
+import ActivityPage from "../features/pages/activityPage";
+import AnalyticsPage from "../features/pages/analyticsPage";
+import NotificationPage from "../features/pages/notificationPage";
+import DevelopmentPage from "../features/pages/developmentPage";
+import Layout from "../shared/components/layouts/layout";
 
-import PageTransitions from "../components/animations/pageTransitions";
+import PageTransitions from "../shared/components/animations/pageTransitions";
 
 export default function AppRoutes() {;
 
@@ -30,6 +31,7 @@ export default function AppRoutes() {;
 
       <Route path="iris" element={<Layout />}>
         <Route path="/iris/home" element={<DashboardPage />} />
+        <Route path="/iris/room_management" element={<ClassroomPage />} />
         <Route path="/iris/activity" element={<ActivityPage />} />
         <Route path="/iris/development" element={<DevelopmentPage />} />
         <Route path="/iris/analytics" element={<AnalyticsPage />} />

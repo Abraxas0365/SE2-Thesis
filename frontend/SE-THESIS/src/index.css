@@ -298,3 +298,26 @@
     @apply bg-background text-foreground;}
   html {
     @apply font-sans;}}
+
+@layer utilities {
+  .rtl { direction: rtl; }
+  .ltr { direction: ltr; }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  opacity: 20%;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #a9aeb8;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #989ea5;
+}

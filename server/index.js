@@ -1,6 +1,7 @@
 require("dotenv").config();
 
 const express = require("express");
+const http = require("http")
 const app = express();
 const port = process.env.SERVER_PORT;
 const connectDB = require("./config/db");
@@ -8,10 +9,15 @@ const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const logger = require("./utils/logger");
 
+const { initSocket } = require("./config/socket");
 
+const server = http.createServer(app);
+initSocket(server);
+
+server.listen(4000, () => console.log("Server running"));
 // !So i added rateLimiter specifically for authentication as of now, but ill add
 // !rate limiter on other request to especially ones that needs database request 
-const authLimiter = rateLimit({
+const requestLimiter = rateLimit({
     // *When you reach the limit of 5 request consecutively, youll be 
     // *locked 15 minutes before being able to send another request
   windowMs: 15 * 60 * 1000,
@@ -28,6 +34,7 @@ const authLimiter = rateLimit({
 connectDB().catch(console.dir);
 
 const HomeRouter = require("./Routes/home");
+const RoomRouter = require("./Routes/room");
 const AuthRouter = require("./Routes/auth");
 
 app.use(express.json());
@@ -36,10 +43,16 @@ app.use(cors());
 
 app.use("/server/home", HomeRouter);
 
-//* We implement that authLimiter here
-app.use("/auth/register", authLimiter);
-app.use("/auth/login", authLimiter);
+//* We implement that requestLimiter here
+app.use("/auth/register", requestLimiter);
+app.use("/auth/login", requestLimiter);
 app.use("/auth", AuthRouter);
+
+app.use("/room/create", requestLimiter);
+app.use("/room/list", requestLimiter);
+app.use("/room", RoomRouter);
+
+
 
 
 // !So you see these requests logs their activties using the logger. It takes the request method,

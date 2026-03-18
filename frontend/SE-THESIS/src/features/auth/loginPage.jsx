@@ -3,13 +3,13 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 // !Componenets
-import { loginUser } from "../services/authService";
-import SlideUp from "../components/animations/slideUp";
-import { useServerStatus } from "../context/serverStatusContext.jsx";
-import { handleServerDown } from "../utils/serverDownHandler.js";
+import { loginUser } from "../../shared/services/authService.js";
+import SlideUp from "../../shared/components/animations/slideUp.jsx";
+import { useServerStatus } from "../../context/serverStatusContext.jsx";
+import { handleServerDown } from "../../shared/utils/serverDownHandler.js";
+import { Toaster } from "../../shared/components/ui/sonner.js";
 // !Assets
 import { CircleAlert } from "lucide-react";
-import { Toaster } from "../components/ui/sonner.js";
 import { toast } from "sonner";
 import Logo from "@/assets/icons/logo.png";
 
