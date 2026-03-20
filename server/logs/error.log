@@ -55,3 +55,5 @@
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- Cannot read properties of null (reading 'email') with status code (500)","method":"POST","timestamp":"2026-03-19 22:59:35"}
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- Cannot read properties of null (reading 'email') with status code (500)","method":"POST","timestamp":"2026-03-19 23:10:34"}
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- Cannot read properties of null (reading 'email') with status code (500)","method":"POST","timestamp":"2026-03-19 23:10:40"}
+{"ip":"::ffff:127.0.0.1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-19 19:38:04"}
+{"ip":"::ffff:127.0.0.1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-19 19:38:09"}
