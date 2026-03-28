@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  is_admin: {
+    type: Boolean,
+    default: false,
+  },
   user_organization: {
     type: String,
     default: ""

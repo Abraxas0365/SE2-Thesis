@@ -6,6 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import { ServerStatusProvider } from "./context/serverStatusContext";
 import { RoomProvider } from "./context/roomContext";
 import { AuthProvider } from "./context/authContext";
+import { CameraProvider } from "./context/cameraContext";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -13,8 +14,10 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <ServerStatusProvider>
       <AuthProvider>
         <RoomProvider>
-          <App />
-          <Toaster richColors position="bottom-right" />
+          <CameraProvider>
+            <App />
+            <Toaster richColors position="bottom-right" />
+          </CameraProvider>
         </RoomProvider>
       </AuthProvider>
     </ServerStatusProvider>

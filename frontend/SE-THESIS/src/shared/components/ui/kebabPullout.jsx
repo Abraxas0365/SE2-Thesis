@@ -44,10 +44,10 @@ export default function KebabPullout({
         horizontal: "left",
       }}
     >
-      <div className="bg-[#DFDEDA] rounded-lg overflow-hidden min-w-[200px]">
+      <div className="bg-[#DFDEDA] rounded-lg w-fit">
         <button
           onClick={handleEditClassroom}
-          className="w-full px-6 py-3 flex items-center gap-3 text-[#4F4F4F] hover:bg-[#C4C3C0] transition-colors duration-150 text-subtitle font-medium"
+          className="w-full px-6 py-2 flex items-center gap-3 text-[#4F4F4F] hover:bg-[#C4C3C0] transition-colors duration-150 text-subtitle font-medium"
         >
           <Edit2 size={18} />
           Edit Classroom

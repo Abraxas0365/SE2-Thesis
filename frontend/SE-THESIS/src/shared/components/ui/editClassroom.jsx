@@ -7,7 +7,7 @@ export default function EditClassroom({ open, onClose, roomId }) {
     <div className="fixed inset-0 z-50">
       {/* Dark overlay backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 transition-opacity duration-300"
+        className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
       />
 

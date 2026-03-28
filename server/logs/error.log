@@ -124,3 +124,19 @@
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- User asd@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-22 19:34:50"}
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- User asd@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-22 19:45:18"}
 {"ip":"::1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-22 19:54:17"}
+{"ip":"::1","level":"error","message":"ROOM CREATE -- Attempted to create a room with an existing name","method":"POST","timestamp":"2026-03-23 08:36:17"}
+{"ip":"::1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-23 19:39:11"}
+{"ip":"::1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-25 21:50:38"}
+{"ip":"::1","level":"error","message":"AUTH LOGIN -- User trizxd123@gmail.com password do not match with status code (400)","method":"POST","timestamp":"2026-03-26 19:04:24"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:37"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:39"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:39"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:39"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:51"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:52"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:52"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:52"}
+{"ip":"::1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:38:53"}
+{"ip":"::ffff:127.0.0.1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:39:04"}
+{"ip":"::ffff:127.0.0.1","level":"error","message":"DEVICE ADD -- device_locaiton is not defined","method":"POST","timestamp":"2026-03-26 23:39:05"}
+{"ip":"::ffff:127.0.0.1","level":"error","message":"DEVICE ADD -- Device.exist is not a function","method":"POST","timestamp":"2026-03-26 23:39:27"}

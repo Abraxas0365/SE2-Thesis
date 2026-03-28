@@ -1,36 +1,354 @@
-import { X } from "lucide-react";
+import { useState, useRef, useEffect } from "react";
+import { X, ChevronLeft } from "lucide-react";
+import Dialog from "@mui/material/Dialog";
+import Switch from "@mui/material/Switch";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import Draggable from "react-draggable";
+import Small_Logo from "@/assets/images/small_logo.png";
+import { addCamera, getDevice } from "../../services/deviceService";
+import { handleServerDown } from "../../utils/serverDownHandler";
+import { useServerStatus } from "../../../context/serverStatusContext";
+import { useNavigate } from "react-router-dom";
+import { Toaster } from "../../components/ui/sonner";
+import { useCamera } from "../../../context/cameraContext";
+import { toast } from "sonner";
+
+function PaperComponent(props) {
+  const nodeRef = useRef(null);
+
+  return (
+    <Draggable
+      nodeRef={nodeRef}
+      handle="#draggable-dialog-title"
+      cancel={'[class*="MuiDialogContent-root"]'}
+    >
+      <Paper {...props} ref={nodeRef} />
+    </Draggable>
+  );
+}
 
 export default function ViewClassroom({ open, onClose, roomId, roomName }) {
+  const navigate = useNavigate();
+  const { isServerUp, setIsServerUp } = useServerStatus();
+  const [selectedCamera, setSelectedCamera] = useState(null);
+  const videoRef = useRef(null);
+  const [cameras, setCameras] = useState([]);
+  const [openDevices, setOpenDevices] = useState(false);
+  const streamRef = useRef(null);
+  const { startCamera } = useCamera();
+  const { getStream } = useCamera();
+
+  useEffect(() => {
+    async function initCameras() {
+      const devices = await getDevice(roomId);
+
+      const savedDevice = devices[0];
+
+      const matchedCamera = cameras.find(
+        (cam) => cam.groupId === savedDevice.device_group,
+      );
+
+      if (matchedCamera) {
+        await startCamera(roomId, matchedCamera.deviceId);
+      }
+    }
+
+    if (cameras.length) {
+      initCameras();
+    }
+  }, [roomId, cameras]);
+
+  useEffect(() => {
+    async function getCameras() {
+      try {
+        await navigator.mediaDevices.getUserMedia({ video: true });
+
+        const devices = await navigator.mediaDevices.enumerateDevices();
+
+        const videoInputs = devices.filter(
+          (device) => device.kind === "videoinput",
+        );
+
+        setCameras(videoInputs);
+      } catch (err) {
+        console.error("Error getting cameras:", err);
+      }
+    }
+
+    getCameras();
+  }, []);
+
+  useEffect(() => {
+    if (!open) return;
+
+    const stream = getStream(roomId);
+
+    if (videoRef.current && stream) {
+      videoRef.current.srcObject = stream;
+    }
+  }, [open, roomId]);
+
+  // useEffect(() => {
+  //   async function startCamera() {
+  //     if (!selectedCamera) return;
+
+  //     try {
+  //       // stop previous stream FIRST
+  //       if (streamRef.current) {
+  //         streamRef.current.getTracks().forEach((track) => track.stop());
+  //       }
+
+  //       const stream = await navigator.mediaDevices.getUserMedia({
+  //         video: {
+  //           deviceId: { exact: selectedCamera.deviceId },
+  //         },
+  //       });
+
+  //       streamRef.current = stream;
+
+  //       if (videoRef.current) {
+  //         videoRef.current.srcObject = stream;
+  //       }
+  //     } catch (err) {
+  //       console.error("Camera error:", err);
+  //     }
+  //   }
+
+  //   startCamera();
+
+  //   return () => {
+  //     if (streamRef.current) {
+  //       streamRef.current.getTracks().forEach((track) => track.stop());
+  //     }
+  //   };
+  // }, [selectedCamera]);
+
+  const handleAddCamera = async (data) => {
+    try {
+      const res = await addCamera({
+        device_location: roomId,
+        device_type: "Camera",
+        device_label: selectedCamera.label,
+      });
+      toast.success(res.message);
+    } catch (error) {
+      if (handleServerDown(error, setIsServerUp, navigate)) return;
+      // ?If it's not, then the status error message will be displayed
+      toast.error(error.response?.data?.message || "Something failed");
+    }
+  };
+
+  const handleClickOpen = () => {
+    setOpenDevices(true);
+  };
+
+  const handleClose = () => {
+    setOpenDevices(false);
+  };
+
   if (!open) return null;
+
+  const ToggleSwitch = styled((props) => (
+    <Switch
+      focusVisibleClassName=".Mui-focusVisible"
+      disableRipple
+      {...props}
+    />
+  ))(({ theme }) => ({
+    width: 50,
+    height: 26,
+    padding: 0,
+    "& .MuiSwitch-switchBase": {
+      padding: 0,
+      margin: 2,
+      transitionDuration: "300ms",
+      "&.Mui-checked": {
+        transform: "translateX(24px)",
+        color: "#fff",
+        "& + .MuiSwitch-track": {
+          backgroundColor: "#A7A7A4",
+          opacity: 1,
+          border: 0,
+          ...theme.applyStyles("dark", {
+            backgroundColor: "#A7A7A4",
+          }),
+        },
+        "&.Mui-disabled + .MuiSwitch-track": {
+          backgroundColor: "#A7A7A4",
+        },
+      },
+      "&.Mui-focusVisible .MuiSwitch-thumb": {
+        color: "#33cf4d",
+        border: "6px solid #fff",
+      },
+      "&.Mui-disabled .MuiSwitch-thumb": {
+        color: theme.palette.grey[100],
+        ...theme.applyStyles("dark", {
+          color: theme.palette.grey[600],
+        }),
+      },
+      "&.Mui-disabled + .MuiSwitch-track": {
+        opacity: 0.7,
+        ...theme.applyStyles("dark", {
+          opacity: 0.3,
+        }),
+      },
+    },
+    "& .MuiSwitch-thumb": {
+      boxSizing: "border-box",
+      width: 22,
+      height: 22,
+    },
+    "& .MuiSwitch-track": {
+      borderRadius: 26 / 2,
+      backgroundColor: "#A7A7A4",
+      boxShadow:
+        "inset 1px 2px 2px rgba(0, 0, 0, 0.4), inset -1px -1px 2px rgba(0, 0, 0, 0.2)",
+      opacity: 1,
+      transition: theme.transitions.create(["background-color"], {
+        duration: 500,
+      }),
+      ...theme.applyStyles("dark", {
+        backgroundColor: "#39393D",
+      }),
+    },
+  }));
 
   return (
     <div className="fixed inset-0 z-50">
       {/* Dark overlay backdrop */}
       <div
-        className="absolute inset-0 bg-black/50 transition-opacity duration-300"
+        className="absolute inset-0 bg-black/50 backdrop-blur-xs transition-opacity duration-300"
         onClick={onClose}
       />
 
       {/* Modal container */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="pointer-events-auto bg-[#DFDEDA] rounded-lg shadow-2xl overflow-hidden w-[85vw] h-[85vh] max-w-6xl max-h-[90vh] flex flex-col">
-          {/* Header */}
-          <div className="bg-[#C4C3C0] shadow-md px-8 py-6 flex items-center justify-between border-b border-black/10">
-            <h2 className="text-2xl font-bold text-[#4F4F4F]">{roomName}</h2>
-            <button
-              onClick={onClose}
-              className="cursor-pointer hover:scale-110 transition-transform duration-150 p-2 rounded-full hover:bg-black/10"
-            >
-              <X size={24} color="#4F4F4F" />
-            </button>
-          </div>
+      <section className="absolute inset-0 flex items-center justify-center pointer-events-none">
+        <div className="bg-[#DFDEDA] shadow-black/70 shadow-lg w-[60%] h-[80%] min-h-0 rounded-lg">
+          <div className="pointer-events-auto rounded-lg overflow-hidden w-full h-full flex flex-col">
+            {/* Header */}
+            <div className=" px-8 py-6 flex items-center justify-between">
+              <h2 className="text-title font-bold text-[#4F4F4F]">
+                {roomName} Live Feed
+              </h2>
+              <button
+                onClick={onClose}
+                className="cursor-pointer hover:scale-110 transition-transform duration-150 p-2 rounded-full hover:bg-black/10"
+              >
+                <X size={24} color="#4F4F4F" />
+              </button>
+            </div>
 
-          {/* Content area - blank for now */}
-          <div className="flex-1 bg-[#DFDEDA] overflow-y-auto p-8">
-            {/* Content will be added here */}
+            {/* Content area - blank for now */}
+            <div className="flex w-full h-full flex-col gap-6 px-8 py-5 min-h-0">
+              {/* Content will be added here */}
+              <div className="shadow-inner-neumorphic p-2 flex justify-center items-center w-full h-[65%] rounded-lg">
+                {selectedCamera ? (
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    playsInline
+                    className="w-full h-full object-cover rounded-lg"
+                  />
+                ) : (
+                  <p className="text-[#4F4F4F]">No camera selected</p>
+                )}
+              </div>
+              <div className="shadow-inner-neumorphic flex flex-row p-5 gap-5 items-center justify-between w-full h-[15%] rounded-lg">
+                <button className="w-full text-subtitle primary-text shadow-black/40 shadow-md px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300">
+                  Remove Classroom
+                </button>
+                <button className="w-full text-subtitle primary-text shadow-black/40 shadow-md px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300">
+                  Manual Lights
+                </button>
+                <button className="w-full text-subtitle primary-text shadow-black/40 shadow-md px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300">
+                  Manual Fans
+                </button>
+              </div>
+
+              <div className="flex flex-row justify-end gap-5 w-full h-[10%]">
+                <button className="w-fit bg-[#A1A2A6] text-subtitle secondary-text shadow-outside-dropshadow px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300">
+                  View Schedule
+                </button>
+                <button className="w-fit bg-[#A1A2A6] text-subtitle secondary-text shadow-outside-dropshadow px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300">
+                  View Devices
+                </button>
+                <button
+                  onClick={handleClickOpen}
+                  className="w-fit bg-[#A1A2A6] text-subtitle secondary-text shadow-outside-dropshadow px-10 py-6 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300"
+                >
+                  Add Sensor
+                </button>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
+      </section>
+      <Dialog
+        open={openDevices}
+        onClose={handleClose}
+        PaperComponent={PaperComponent}
+        aria-labelledby="draggable-dialog-title"
+        PaperProps={{
+          className: "w-[60vw] h-[60vh]",
+          sx: {
+            borderRadius: "16px",
+            background: "#DFDEDA",
+          },
+        }}
+      >
+        <section className="w-full h-full flex flex-col">
+          <div
+            className="w-full shadow-lg shadow-gray h-fit p-3 flex flex-row items-center justify-between cursor-grab active:cursor-grabbing"
+            id="draggable-dialog-title"
+          >
+            <div className="flex items-center gap-2">
+              <button
+                onClick={handleClose}
+                className="cursor-pointer hover:-translate-x-1 transition-all duration-150 "
+              >
+                <ChevronLeft size={30} color="#4F4F4F" />
+              </button>
+              <h1 className="text-title">Sensors</h1>
+            </div>
+            <ToggleSwitch sx={{ m: 1 }} />
+          </div>
+          <div className="w-full border-b border-[#C8C8C8] h-fit px-5 py-3 flex flex-col">
+            <h2 className="text-title font-medium">Connected Device</h2>
+          </div>
+          <div className="w-full h-fit px-5 py-3 flex flex-col">
+            <h2 className="text-title font-medium">Available Devices</h2>
+          </div>
+          <div className="w-full h-full flex flex-col  overflow-y-scroll px-10 py-5">
+            <ul className="flex flex-col gap-5">
+              {cameras.map((cam) => (
+                <div
+                  key={cam.deviceId}
+                  className="flex items-center gap-2 text-subtitle cursor-pointer"
+                  onClick={() => {
+                    setSelectedCamera(cam);
+                  }}
+                >
+                  <img
+                    src={Small_Logo}
+                    alt="cam"
+                    className="w-10 aspect-auto"
+                  />
+                  <li>{cam.label || "Unknown Camera"}</li>
+                </div>
+              ))}
+            </ul>
+          </div>
+          <button
+            onClick={handleAddCamera}
+            className="w-fit mx-2 my-3 bg-[#A1A2A6] text-subtitle secondary-text shadow-outside-dropshadow px-8 py-4 rounded-2xl cursor-pointer hover:bg-[#b1b1b1] hover:scale-101 transition-transform duration-300"
+          >
+            Connect
+          </button>
+        </section>
+      </Dialog>
+      {/* <Toaster richColors expand position="bottom-right" /> */}
     </div>
   );
 }

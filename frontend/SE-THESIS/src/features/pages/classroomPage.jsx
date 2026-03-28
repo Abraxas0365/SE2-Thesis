@@ -7,6 +7,7 @@ import { useServerStatus } from "../../context/serverStatusContext.jsx";
 import { toast } from "sonner";
 import { addRoom, getRooms } from "../../shared/services/roomService.js";
 import { useNavigate } from "react-router-dom";
+import { useRooms } from "../../context/roomContext.jsx";
 import { socket } from "../../shared/services/socketService.js";
 import KebabPullout from "../../shared/components/ui/kebabPullout.jsx";
 import EditClassroom from "../../shared/components/ui/editClassroom.jsx";
@@ -15,7 +16,7 @@ import ViewClassroom from "../../shared/components/ui/viewClassroom.jsx";
 
 export default function classroomPage() {
   const navigate = useNavigate();
-  const [rooms, setRooms] = useState([]);
+  const { rooms } = useRooms();
   const [kebabAnchorEl, setKebabAnchorEl] = useState(null);
   const [selectedRoomId, setSelectedRoomId] = useState(null);
   const [selectedRoomName, setSelectedRoomName] = useState(null);
@@ -95,6 +96,7 @@ export default function classroomPage() {
       <section className="relative w-full h-fit flex">
         <div className="w-full flex flex-row items-end justify-between text-[#4F4F4F]">
           <h1 className="text-subheader font-bold">Monitor Classroom</h1>
+          {/* ADD BUTTON */}
           <button
             onClick={handleClick}
             className="flex items-center gap-2 px-3 py-2 text-subtitle text-[#4F4F4F] hover:transition-all hover:scale-102 duration-300 cursor-pointer"
@@ -105,6 +107,7 @@ export default function classroomPage() {
         </div>
       </section>
 
+      {/* CARDS FOR ROOMS */}
       <section className="flex-1 overflow-y-auto min-h-0 grid grid-cols-4 gap-10 p-4">
         {rooms.map((room) => (
           <div
@@ -115,7 +118,7 @@ export default function classroomPage() {
             <div className="bg-[#DFDEDA] w-full h-[70%] shadow-inner shadow-black/10 flex items-center justify-center">
               <ListVideo size={60} color="#A1A2A6" />
             </div>
-            <div className="w-full flex-1 bg-[#C4C3C0] shadow-inner shadow-black/30 flex items-center justify-between px-4">
+            <div className="w-full flex-1 bg-[#C4C3C0] shadow-inner shadow-black/30 flex items-center justify-between py-4 px-4">
               <div>
                 <p className="text-subtitle text-[#4F4F4F]">{room.room_name}</p>
               </div>
@@ -123,7 +126,7 @@ export default function classroomPage() {
                 onClick={(e) => handleKebabClick(e, room._id, room.room_name)}
                 className="cursor-pointer hover:scale-110 transition-transform duration-150 p-2 rounded-full hover:bg-black/10"
               >
-                <Ellipsis size={50} color="#A1A2A6" />
+                <Ellipsis size={35} color="#A1A2A6" />
               </button>
             </div>
           </div>

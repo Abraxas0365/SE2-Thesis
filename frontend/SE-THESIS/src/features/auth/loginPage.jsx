@@ -154,7 +154,7 @@ export default function LoginPage() {
         </p>
       </section>
 
-      <Toaster richColors expand position="bottom-righ" />
+      <Toaster richColors expand position="bottom-right" />
     </div>
   );
 }

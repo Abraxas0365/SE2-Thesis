@@ -10,7 +10,6 @@ exports.addRoom = async (req, res, next) => {
   try {
     const io = getIO();
     const { room_name } = req.body;
-
     const userExists = await User.exists({ _id: req.userID });
 
     if (!userExists) {

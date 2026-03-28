@@ -13,21 +13,6 @@ export default function DevelopmentPage() {
   useEffect(() => {
     let stream;
 
-    const startCamera = async () => {
-      try {
-        stream = await navigator.mediaDevices.getUserMedia({
-          video: true,
-          audio: false,
-        });
-
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-        }
-      } catch (err) {
-        console.error("Error accessing camera: ", err);
-      }
-    };
-
     const CaptureFrame = () => {
       const video = videoRef.current;
       const canvas = canvasRef.current;
@@ -48,13 +33,10 @@ export default function DevelopmentPage() {
           formData.append("file", blob, "frame.jpg");
 
           try {
-            const response = await fetch(
-              "http://localhost:8000/detect", 
-              {
-                method: "POST",
-                body: formData,
-              }
-            );
+            const response = await fetch("http://localhost:8000/detect", {
+              method: "POST",
+              body: formData,
+            });
 
             const data = await response.json();
 
@@ -65,13 +47,12 @@ export default function DevelopmentPage() {
             setFeatures(data.features);
             setState(data.state);
             setBelief(data.belief);
-
           } catch (error) {
             console.error("Error sending frame:", error);
           }
         },
         "image/jpeg",
-        0.8
+        0.8,
       );
     };
 
@@ -126,7 +107,7 @@ export default function DevelopmentPage() {
           </ul>
         </div>
       )}
-      
+
       {state && (
         <div className="text-center">
           <p>Inferred State: {state}</p>

@@ -33,14 +33,21 @@ export default function SignUpPage() {
   } = useForm();
 
   // ?Watches everything for validation
-  const username = watch("username");
+  const first_name = watch("first_name");
+  const last_name = watch("last_name");
   const email = watch("email");
   const password = watch("password");
   const passwordValue = watch("password", "");
 
-  const isDisabled = !username || !email || !password || !passwordValue;
+  const isDisabled = !first_name || !last_name || !email || !password || !passwordValue;
 
   const onError = (errors) => {
+    if (errors.first_name) {
+      toast.error(errors.first_name.message);
+    }
+    if (errors.last_name) {
+      toast.error(errors.last_name.message);
+    }
     if (errors.email) {
       toast.error(errors.email.message);
     }
@@ -56,8 +63,8 @@ export default function SignUpPage() {
   const onSubmit = async (data) => {
     try {
       const res = await registerUser({
-        first_name: data.username,
-        last_name: "User",
+        first_name: data.first_name,
+        last_name: data.last_name,
         email: data.email,
         password: data.password,
       });
@@ -91,11 +98,18 @@ export default function SignUpPage() {
             className=" w-full flex flex-col items-center gap-5"
           >
             {/* // ?Uses the register field ng react-hook-form. Then a parameter required is added with the error message */}
-            <input
-              {...register("username", { required: "Username is required" })}
-              className="w-[90%] bg-[#E4E3E1] primary-text rounded-3xl px-6 py-4 shadow-inside-dropshadow-small font-light text-subtitle"
-              placeholder="Username"
-            />
+            <div className="w-[90%] flex gap-5">
+              <input
+                {...register("first_name", { required: "Name field is required" })}
+                className="w-full bg-[#E4E3E1] primary-text rounded-3xl px-6 py-4 shadow-inside-dropshadow-small font-light text-subtitle"
+                placeholder="First Name"
+              />
+              <input
+                {...register("last_name", { required: "Name field is required" })}
+                className="w-full bg-[#E4E3E1] primary-text rounded-3xl px-6 py-4 shadow-inside-dropshadow-small font-light text-subtitle"
+                placeholder="Last Name"
+              />
+            </div>
             {/* // ?Now all these input fields follow the same patter with some having extra parameters */}
 
             <input

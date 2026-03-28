@@ -8,6 +8,8 @@ export const RoomProvider = ({ children }) => {
   const [rooms, setRooms] = useState([]);
   const token = localStorage.getItem("token");
 
+  console.log("ROOMS FROM CONTEXT:", rooms)
+
   const resetRooms = () => {
     setRooms([]);
   };
@@ -15,6 +17,7 @@ export const RoomProvider = ({ children }) => {
   const fetchRooms = async () => {
     try {
       const data = await getRooms();
+      console.log("DATA GATHERED:", data)
       setRooms(data);
     } catch (err) {
       console.error(err);

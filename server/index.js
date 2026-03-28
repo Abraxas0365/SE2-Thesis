@@ -35,6 +35,7 @@ connectDB().catch(console.dir);
 
 const HomeRouter = require("./Routes/home");
 const RoomRouter = require("./Routes/room");
+const DeviceRouter = require("./Routes/device");
 const AuthRouter = require("./Routes/auth");
 
 app.use(express.json());
@@ -52,6 +53,10 @@ app.use("/auth", AuthRouter);
 app.use("/room/create", requestLimiter);
 app.use("/room/list", requestLimiter);
 app.use("/room", RoomRouter);
+
+app.use("/room/add", requestLimiter);
+app.use("/room/list", requestLimiter);
+app.use("/device", DeviceRouter);
 
 
 
