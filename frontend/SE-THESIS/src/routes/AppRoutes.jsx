@@ -10,6 +10,7 @@ import ActivityPage from "../features/pages/activityPage";
 import AnalyticsPage from "../features/pages/analyticsPage";
 import NotificationPage from "../features/pages/notificationPage";
 import DevelopmentPage from "../features/pages/developmentPage";
+import ProfilePage from "../features/pages/profilePage";
 import Layout from "../shared/components/layouts/layout";
 
 import PageTransitions from "../shared/components/animations/pageTransitions";
@@ -28,6 +29,7 @@ export default function AppRoutes() {;
       <Route path="/iris" element={<HomePage />} />
       <Route path="/iris/login" element={<LoginPage />} />
       <Route path="/iris/signup" element={<SignUpPage />} />
+      <Route path="/iris/profile" element={<ProfilePage />} />
 
       <Route path="iris" element={<Layout />}>
         <Route path="/iris/home" element={<DashboardPage />} />
