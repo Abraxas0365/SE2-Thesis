@@ -4422,3 +4422,44 @@
 {"level":"info","message":"ROOMS FETCHED -- {\n  _id: new ObjectId('69dcdddbbf944adea34033f9'),\n  room_name: 'Sample Room 1',\n  room_owner: {\n    _id: new ObjectId('69c3e8291e0871695eda9ee1'),\n    first_name: 'Triztan'\n  },\n  room_occupants: 0,\n  room_organization: 'Vision Impaired Org',\n  room_specification: null,\n  __v: 0\n},{\n  _id: new ObjectId('69dce6929d4aaf0dbbdca06a'),\n  room_name: 'Sample room 3',\n  room_owner: {\n    _id: new ObjectId('69c3e8291e0871695eda9ee1'),\n    first_name: 'Triztan'\n  },\n  room_occupants: 0,\n  room_organization: 'Vision Impaired Org',\n  room_specification: null,\n  __v: 0\n}","timestamp":"2026-04-13 23:16:05"}
 {"ip":"::1","level":"info","message":"ACTIVITY FETCHED -- Activities for room 69dcdddbbf944adea34033f9 fetched successfully","method":"GET","timestamp":"2026-04-13 23:16:05"}
 {"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-13 23:19:04"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-13 23:20:34"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-13 23:22:29"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:17:47"}
+{"ip":"::1","level":"info","message":"SERVER - Health check request","method":"GET","route":"/health","status":200,"timestamp":"2026-04-14 22:19:02"}
+{"ip":"::1","level":"info","message":"AUTH LOGIN -- Email trizxd123@gmail.com Login Succesfull","method":"POST","timestamp":"2026-04-14 22:19:10"}
+{"level":"info","message":"ROOMS FETCHED -- {\n  _id: new ObjectId('69dcdddbbf944adea34033f9'),\n  room_name: 'Sample Room 1',\n  room_owner: {\n    _id: new ObjectId('69c3e8291e0871695eda9ee1'),\n    first_name: 'Triztan'\n  },\n  room_occupants: 0,\n  room_organization: 'Vision Impaired Org',\n  room_specification: null,\n  __v: 0\n},{\n  _id: new ObjectId('69dce6929d4aaf0dbbdca06a'),\n  room_name: 'Sample room 3',\n  room_owner: {\n    _id: new ObjectId('69c3e8291e0871695eda9ee1'),\n    first_name: 'Triztan'\n  },\n  room_occupants: 0,\n  room_organization: 'Vision Impaired Org',\n  room_specification: null,\n  __v: 0\n}","timestamp":"2026-04-14 22:19:10"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:26:39"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:26:46"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:26:49"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:26:57"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:27:39"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:29:56"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:00"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:01"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:09"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:34"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:49"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:53"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:30:55"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:31:21"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:32:47"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:32:49"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:32:52"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:38:29"}
+{"ip":"::1","level":"info","message":"AUTH LOGIN -- Email trizxd123@gmail.com Login Succesfull","method":"POST","timestamp":"2026-04-14 22:38:35"}
+{"ip":"::1","level":"info","message":"ORGANIZATION CREATE -- Organization added DBM (Deaf Blind Mute): With status code 201","method":"POST","timestamp":"2026-04-14 22:39:20"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:41:33"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:41:43"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:41:48"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:41:56"}
+{"level":"info","message":"ROOMS FETCHED -- ","timestamp":"2026-04-14 22:45:13"}
+{"level":"info","message":"ROOMS FETCHED -- ","timestamp":"2026-04-14 22:45:17"}
+{"ip":"::1","level":"error","message":"AUTH UPDATE ORG -- Cast to ObjectId failed for value \"DBM (Deaf Blind Mute)\" (type string) at path \"user_organization\" because of \"BSONError\" with status code (500)","method":"PATCH","timestamp":"2026-04-14 22:45:28"}
+{"ip":"::1","level":"info","message":"AUTH LOGIN -- Email trizxd123@gmail.com Login Succesfull","method":"POST","timestamp":"2026-04-14 22:45:37"}
+{"level":"info","message":"ROOMS FETCHED -- ","timestamp":"2026-04-14 22:45:37"}
+{"ip":"::1","level":"error","message":"AUTH UPDATE ORG -- Cast to ObjectId failed for value \"DBM (Deaf Blind Mute)\" (type string) at path \"user_organization\" because of \"BSONError\" with status code (500)","method":"PATCH","timestamp":"2026-04-14 22:45:43"}
+{"level":"info","message":"ROOMS FETCHED -- ","timestamp":"2026-04-14 22:45:48"}
+{"level":"info","message":"SERVER -- Server started runnin on port: 4000","timestamp":"2026-04-14 22:48:52"}
+{"ip":"::1","level":"error","message":"ORGANIZATION MEMBERS -- Cast to ObjectId failed for value \"Vision Impaired Org\" (type string) at path \"user_organization\" for model \"User\"","method":"GET","timestamp":"2026-04-14 22:48:56"}
+{"ip":"::1","level":"info","message":"AUTH USERDATA -- Triztan data requested from frontend: Accepted","method":"GET","timestamp":"2026-04-14 22:49:00"}
+{"ip":"::1","level":"info","message":"AUTH LOGIN -- Email trizxd123@gmail.com Login Succesfull","method":"POST","timestamp":"2026-04-14 22:49:05"}

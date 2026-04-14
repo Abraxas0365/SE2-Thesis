@@ -2,6 +2,7 @@ require("dotenv").config();
 const logger = require("../utils/logger");
 const { getIO } = require("../config/socket");
 const Organization = require("../models/organization_model");
+const User = require("../models/user_model");
 
 exports.addOrg = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ exports.addOrg = async (req, res, next) => {
     const userID = req.userID;
 
     const existingOrg = await Organization.exists({
-      org_name: org_name,
+      organization_name: org_name,
     });
 
     if (existingOrg) {
@@ -24,12 +25,16 @@ exports.addOrg = async (req, res, next) => {
       organization_owner: userID,
     });
 
+    
+    await org.save();
+    
+    await User.findByIdAndUpdate(userID, { user_organization: org._id }, { new: true });
+    
     io.emit("orgAdded", {
       _id: org._id,
       organization_name: org.organization_name,
     });
 
-    await org.save();
     logger.info({
       message: `ORGANIZATION CREATE -- Organization added ${req.body.org_name}: With status code 201`,
       method: req.method,
@@ -59,6 +64,8 @@ exports.getOrg = async (req, res) => {
 
     console.log("ORGANIZATION FOUND:", organization);
 
+    console.log("GET ORGANIZATION -- Request query:", organization._id);
+
     res.status(200).json(organization);
   } catch (error) {
     console.error("GET ORGANIZATION ERROR:", error);
@@ -70,6 +77,8 @@ exports.getOrgMembers = async (req, res) => {
   try {
     const User = require("../models/user_model");
     const { organization } = req.query;
+
+    console.log("GET ORG MEMBERS -- Received organization query:", req.query);
 
     if (!organization) {
       return res.status(400).json({
