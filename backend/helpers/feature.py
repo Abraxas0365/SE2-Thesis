@@ -1,9 +1,11 @@
+#backend/helpers/feature.py
 import numpy as np
+import cv2
 
 # Exit zones configuration
 EXIT_ZONES = [
-    (0, 300, 100, 480),   # door 1
-    (540, 300, 640, 480)  # door 2
+    [(0, 300), (100, 300), (100, 480), (0, 480)],     # door 1
+    [(540, 300), (640, 300), (640, 480), (540, 480)]  # door 2
 ]
 
 
@@ -11,25 +13,9 @@ def get_center(box):
     x1, y1, x2, y2 = box
     return ((x1 + x2) / 2, (y1 + y2) / 2)
 
-
-def intersects(box, zone):
-    bx1, by1, bx2, by2 = box
-    zx1, zy1, zx2, zy2 = zone
-
-    return not (
-        bx2 < zx1 or bx1 > zx2 or
-        by2 < zy1 or by1 > zy2
-    )
-
-
-# -------------------------------
-# NEW: Determine if center is inside zone
-# -------------------------------
-def is_inside_zone(center, zone):
-    x, y = center
-    x1, y1, x2, y2 = zone
-    return x1 <= x <= x2 and y1 <= y <= y2
-
+def is_inside_polygon(point, polygon):
+    contour = np.array(polygon, dtype=np.int32)
+    return cv2.pointPolygonTest(contour, point, False) >= 0
 
 def compute_motion(current_centers, prev_centers):
     if not prev_centers or not current_centers:
@@ -52,7 +38,8 @@ def compute_motion(current_centers, prev_centers):
 # -------------------------------
 # MAIN FEATURE EXTRACTION
 # -------------------------------
-def extract_features(results, previous_centers):
+def extract_features(results, previous_centers, exit_points):
+    print("Exit points - ", exit_points)
     """
     Extract motion, people count, exit activity,
     AND direction-based entry/exit counts
@@ -88,10 +75,11 @@ def extract_features(results, previous_centers):
     # -------------------------------
     # EXISTING: Exit activity (boolean)
     # -------------------------------
+    zones = exit_points if exit_points else EXIT_ZONES
+
     exit_activity = any(
-        intersects(box, zone)
+        any(is_inside_polygon(get_center(box), poly) for poly in zones)
         for box in people_boxes
-        for zone in EXIT_ZONES
     )
 
     # -------------------------------
@@ -101,11 +89,13 @@ def extract_features(results, previous_centers):
     exit_count = 0
 
     # NOTE: This is approximate matching (no tracking IDs yet)
+    zones = exit_points if exit_points and len(exit_points) > 0 else EXIT_ZONES
+
     for curr in centers:
         for prev in previous_centers:
-            for zone in EXIT_ZONES:
-                prev_inside = is_inside_zone(prev, zone)
-                curr_inside = is_inside_zone(curr, zone)
+            for poly in zones:
+                prev_inside = is_inside_polygon(prev, poly)
+                curr_inside = is_inside_polygon(curr, poly)
 
                 # OUTSIDE → INSIDE = ENTRY
                 if not prev_inside and curr_inside:
