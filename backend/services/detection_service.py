@@ -1,3 +1,4 @@
+#backend/services/detection_service.py
 import numpy as np
 import cv2
 
@@ -7,13 +8,14 @@ from helpers.inference import update_belief, infer_state
 
 DT = 3.0
 
-def process_frame(image, room_state):
+def process_frame(image, room_state, exit_points):
     results = model(image)
 
     # Feature extraction
     features, centers = extract_features(
         results,
-        room_state.previous_centers
+        room_state.previous_centers,
+        exit_points
     )
     room_state.previous_centers = centers
 

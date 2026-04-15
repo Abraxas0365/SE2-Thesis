@@ -2,25 +2,44 @@ import os
 import uuid
 import cv2
 
-RESULT_DIR = "./results"
-MAX_FILES = 5
+RESULTS_DIR = "./results"
+MAX_FILES = 20
+
 
 def save_image(frame):
-    os.makedirs(RESULT_DIR, exist_ok=True)
+    # Ensure folder exists
+    os.makedirs(RESULTS_DIR, exist_ok=True)
 
+    # Generate unique filename
     filename = f"{uuid.uuid4()}.jpg"
-    path = os.path.join(RESULT_DIR, filename)
+    filepath = os.path.join(RESULTS_DIR, filename)
 
-    cv2.imwrite(path, frame)
+    # Save image
+    cv2.imwrite(filepath, frame)
 
-    # cleanup old files
-    files = sorted(
-        [os.path.join(RESULT_DIR, f) for f in os.listdir(RESULT_DIR)],
-        key=os.path.getctime
-    )
+    # 🔥 CLEANUP: keep only latest 10 files
+    try:
+        files = [
+            os.path.join(RESULTS_DIR, f)
+            for f in os.listdir(RESULTS_DIR)
+            if f.endswith(".jpg")
+        ]
 
-    if len(files) > MAX_FILES:
-        for old_file in files[:len(files) - MAX_FILES]:
-            os.remove(old_file)
+        # Sort by modified time (oldest first)
+        files.sort(key=os.path.getmtime)
 
-    return filename, f"http://localhost:8000/results/{filename}"
+        # Remove extra files
+        while len(files) > MAX_FILES:
+            old_file = files.pop(0)
+            try:
+                os.remove(old_file)
+                print("Deleted old file:", old_file)
+            except PermissionError:
+                print("Skipping (in use):", old_file)
+
+    except Exception as e:
+        print("Cleanup error:", e)
+
+    # Return for frontend
+    image_url = f"http://localhost:8000/results/{filename}"
+    return filename, image_url
